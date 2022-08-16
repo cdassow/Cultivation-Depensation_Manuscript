@@ -133,12 +133,13 @@ bestMod=glm(Mean ~ 1 + rip1:fcomm1 + logBassCPE:gdd5 + fcomm1:logBassCPE + rip1:
 
 # model fit plot - FIGURE 2
 ggplot()+theme_classic()+
-  geom_point(aes(x=bestMod$y, y=bestMod$fitted.values))+
+  geom_point(aes(x=bestMod$y, y=bestMod$fitted.values),size=3)+
   labs(x="Sass et al. (2021)",y="Model Predicted")+
   geom_abline(slope = 1, intercept = 0)+
   coord_cartesian(ylim=c(0,1.5),xlim=c(0,1.5))+
   geom_vline(xintercept = 1,linetype=2)+
-  geom_hline(yintercept = 1,linetype=2)
+  geom_hline(yintercept = 1,linetype=2)+
+  theme(text = element_text(size=20,family = "serif"))
 
 #### OUT OF SAMPLE PREDICTIONS ####
 #reading in lake characteristic data to make predictions and apply results to management
@@ -308,12 +309,12 @@ pfcomm;ks.test(pBass$fcomm1[pBass$obs=="Inference"],pBass$fcomm1[pBass$obs=="Pre
 # APPENDIX S1 FIG. S4 - FULL PANEL FIGURE
 ggarrange(p,pb,prip,pfcomm,pgdd,pwshed, ncol=2, nrow=3, legend = "top", common.legend = T, labels = "auto")
 
-# FIGURE 3 - undertainty in q estimates
+# FIGURE 3 - uncertainty in q estimates
 paic=ggplot(pQ,aes(x=q,y=wbic))+theme_classic()+
   geom_pointrange(aes(xmin=LCL,xmax=UCL))+
   facet_wrap(~obs,scales="free")+
   geom_vline(xintercept = 1)+
-  theme(axis.text.y = element_blank())+
+  theme(axis.text.y = element_blank(), text = element_text(size=20, family = "serif"))+
   xlab(expression(italic("q")))+
   ylab("")
 paic
@@ -345,19 +346,19 @@ ks.test(pD$q[pD$overallMeanWLYDens>=3],pD$q[pD$overallMeanWLYDens<3])
 
 # FIGURE 4 - quadrat plot of q value and average adult walleye density to prioritize lakes for different actions
 pd=ggplot()+theme_classic()+ # converting density in acres to ha
-  geom_rect(aes(ymax=3/.405,ymin=-1.5,xmin=-1.5,xmax=1),alpha=0.1,fill="red")+
-  geom_rect(aes(ymax=27,ymin=3/.405,xmin=-1.5,xmax=1),alpha=0.1,fill="yellow")+
-  geom_rect(aes(ymax=3/.405,ymin=-1.5,xmin=1,xmax=2),alpha=0.1,fill="yellow")+
-  geom_rect(aes(ymax=27,ymin=3/.405,xmin=1,xmax=2),alpha=0.1,fill="green")+
-  geom_point(data=pD,aes(x=q,y=(overallMeanWLYDens/.405),color=obs))+
-  theme(legend.position = "bottom",legend.title = element_blank())+
+  geom_rect(aes(ymax=3/.405,ymin=-1.5,xmin=-1.5,xmax=1),alpha=0.2,fill="#fc8d62")+
+  geom_rect(aes(ymax=27,ymin=3/.405,xmin=-1.5,xmax=1),alpha=0.2,fill="#8da0cb")+
+  geom_rect(aes(ymax=3/.405,ymin=-1.5,xmin=1,xmax=2),alpha=0.2,fill="#8da0cb")+
+  geom_rect(aes(ymax=27,ymin=3/.405,xmin=1,xmax=2),alpha=0.2,fill="#66c2a5")+
+  geom_point(data=pD,aes(x=q,y=(overallMeanWLYDens/.405),color=obs),size=2)+
+  theme(legend.position = "bottom",legend.title = element_blank(), text = element_text(size=20, family = "serif"))+
   geom_vline(xintercept = 1)+
   geom_hline(yintercept = 7.4)+
   labs(x=expression(italic("q")),y="Adult walleye density \n no./ha")+
-  geom_text(aes(x=0.35,y=20,label=qualityDep),color="black")+
-  geom_text(aes(x=0.35,y=0,label=nonqualDep),color="black")+
-  geom_text(aes(x=1.25,y=20,label=qualityCom),color="black")+
-  geom_text(aes(x=1.25,y=0,label=nonqualCom),color="black")+
+  geom_text(aes(x=0.35,y=20,label=qualityDep),color="black", family="serif", size=8)+
+  geom_text(aes(x=0.35,y=0,label=nonqualDep),color="black", family="serif", size=8)+
+  geom_text(aes(x=1.25,y=20,label=qualityCom),color="black", family="serif", size=8)+
+  geom_text(aes(x=1.25,y=0,label=nonqualCom),color="black", family="serif", size=8)+
   scale_color_manual(values = c("black","grey50"))+
   coord_cartesian(xlim=c(0,2),ylim = c(0,25))
 pd
@@ -397,14 +398,16 @@ plb2
 ps=ggplot(pSto,aes(x=q,color=!is.na(pSto$numStocked)))+theme_classic()+
   geom_density(size=1,key_glyph = "path")+
   scale_color_manual(name=" ",labels=c("Not stocked","Stocked"),values = c("black","grey"))+
-  labs(x=expression(italic("q")))
+  labs(x=expression(italic("q")),y="Density")+
+  theme(text = element_text(family = "serif", size = 20))
 ps
 
 #GIFURE 5b
 pr=ggplot(pSto,aes(x=log(denLBStocked),color=q>=1))+theme_classic()+
   geom_density(size=1,key_glyph = "path")+
-  labs(x=expression(paste("Log mean g/",m^{2},' Stocked')))+
-  scale_color_manual(name=" ",labels=c("Depensation","Compensation"),values = c("black","grey"))
+  labs(x=expression(paste("Log mean g/",m^{2},' Stocked')),y="Density")+
+  scale_color_manual(name=" ",labels=c("Depensation","Compensation"),values = c("black","grey"))+
+  theme(text = element_text(family = "serif", size = 20))
 pr
 t.test(pSto$q[!is.na(pSto$numStocked)],pSto$q[is.na(pSto$numStocked)]) # no sig diff between q in stocked and unstocked lakes. Not normally distributed, use mann-whitney
 t.test(log(pSto$denLBStocked[pSto$q>=1]),log(pSto$denLBStocked[pSto$q<1])) # no sig diff stocking density in compensatory and depensatory lakes. Not normally distributed, use mann-whitney
@@ -413,7 +416,7 @@ wilcox.test(pSto$q[!is.na(pSto$numStocked)],pSto$q[is.na(pSto$numStocked)], alte
 ks.test(log(pSto$denLBStocked[pSto$q>=1]),log(pSto$denLBStocked[pSto$q<1]))# no significant difference in stocking density for compensatory and depensatory lakes
 
 # FIGURE 5 - full panel plot
-ggpubr::ggarrange(ps,pr,labels = "auto",legend = "bottom",ncol = 1) 
+ggpubr::ggarrange(ps,pr,labels = c("(a)","(b)"),legend = "bottom",ncol = 1) 
 
 
 # how many stocking events have fish >200 mm TL = 465
