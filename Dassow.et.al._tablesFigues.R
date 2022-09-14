@@ -356,9 +356,13 @@ pd=ggplot()+theme_classic()+ # converting density in acres to ha
   geom_hline(yintercept = 7.4)+
   labs(x=expression(italic("q")),y="Adult walleye density \n no./ha")+
   geom_text(aes(x=0.35,y=20,label=qualityDep),color="black", family="serif", size=8)+
+  geom_text(aes(x=0.35,y=24,label="Maintenance"),color="black", family="Serif", size=6)+
   geom_text(aes(x=0.35,y=0,label=nonqualDep),color="black", family="serif", size=8)+
+  geom_text(aes(x=0.13,y=6,label="Intensive \nManagement"),color="black", family="Serif", size=6)+
   geom_text(aes(x=1.25,y=20,label=qualityCom),color="black", family="serif", size=8)+
+  geom_text(aes(x=1.45,y=24,label="Sustaining"),color="black", family="Serif", size=6)+
   geom_text(aes(x=1.25,y=0,label=nonqualCom),color="black", family="serif", size=8)+
+  geom_text(aes(x=1.75,y=6,label="Rehabilitation"),color="black", family="Serif", size=6)+
   scale_color_manual(values = c("black","grey50"))+
   coord_cartesian(xlim=c(0,2),ylim = c(0,25))
 pd
